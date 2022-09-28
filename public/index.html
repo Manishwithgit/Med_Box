@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Med</title>
+    <style>
+        #back {
+            /* background: rgb(152, 169, 223); */
+            background: #030021FF;
+            
+
+        }
+
+        .list { 
+            text-align: center;
+        }
+
+        h1 {
+            /* text-align: center; */
+
+            color: aliceblue;
+        }
+
+        #container {
+            background: #010020;
+            color: aliceblue;
+            margin: 40px;
+            padding: 12px;
+            /* border: 2px solid #9b0049; */
+            flex: right;
+            width: 40%;
+            display: inline-block;
+            font-size: 20px;
+        }
+
+        .submit {
+            background: #2f2f41;
+            color: aliceblue;
+            /* text-align: center; */
+            /* border: 2px solid #9b0049; */
+            padding: 7px;
+            margin: 10px;
+            display: inline-block;
+            width: 20%;
+
+        }
+         
+
+        .selectFile {
+            background: #2f2f41;
+            color: aliceblue;
+            /* border: 2px solid #9b0049; */
+            padding: 7px;
+            margin: 10px;
+            display: inline-block;
+            width: 20%;
+            font-size: 20px;
+
+        }
+
+        .filebox {
+
+            color: aliceblue;
+            background: #8e8da3;
+        
+            padding: 20px;
+
+        }
+        
+        .sol{
+            
+            text-align: center;
+            padding: 50px;
+            margin: 30px;
+            display: flex;
+            justify-content: space-between;
+        }
+         button{
+            background-color: #543c69; /* Green */
+             border: none;
+             color: white;
+             padding: 15px 32px;
+             text-align: center;
+             text-decoration: none;
+             display: inline-block;
+             font-size: 16px;
+        }
+       
+    </style>
+</head>
+
+<body id="back">
+    
+    <div class="list">
+
+        <h1>Med List</h1>
+
+
+
+        <div class="filebox">
+
+
+            <form action="/avatar" enctype="multipart/form-data" method="post">
+                <select name="container" id="container">
+
+                    <option  value="purchase">Select Purchase & C.Stock Remark Sheet </option>
+                    <option  value="quantity"> Select Quantity & Average Sheet </option>
+    
+                </select> <br>
+                <input class="selectFile" name="fileload" accept=".csv"  type="file" id="fileUpload">
+                <br>
+                <input class="selectFile" type="submit" value="Uploads">
+            </form>
+            
+            <!-- <button class="submit">Upload</button> -->
+
+        </div>
+    </div>
+
+    <div id="solve">
+        <div class="sol">
+         <form action = "/newItem" method="get"><button id="btn">New Items Excel</button></form>
+         <form action = "/greateravg" method="get"><button id="btn">Over Purchase Excel </button></form>
+         <form action = "/avgdouble" method="get"><button id="btn">Double C_Stock Excel</button></form>
+         <form action = "/avgtriple" method="get"><button id="btn">Triple C_Stock Excel</button></form>
+        </div>
+    </div>
+   <footer style="color: white; text-align: center;">&copy; Copyright 2022 All rights reserved | <a style="color: white;" href="https://codebuckets.in/" target="_blank">Codebucket Solutions Pvt. Ltd.</a> </footer>
+</body>
+
+</html>
