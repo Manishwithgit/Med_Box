@@ -5,10 +5,13 @@ const path = require('path');
 const bodyparser = require('body-parser')
 const cors = require('cors')
 const multer = require('multer');
+const util = require('util');
 const csvtojson = require("csvtojson");
 const { response } = require('express');
 
 const excelFile = require("exceljs");
+const { error } = require('console');
+const { ifError } = require('assert');
 
 
 
@@ -35,6 +38,8 @@ db.connect((err) => {
 
 
 });
+
+db.query = util.promisify(db.query)
 
 
 
@@ -80,8 +85,9 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // handle single file upload
-app.post('/avatar', upload.single('fileload'), (req, res,) => {
-    if ((req.body.container) === "quantity") {
+app.post('/avatar', upload.single('fileload'), (req, res) => {
+   try {
+    if (req.body.container === "quantity") {
         const file = req.file;
         // console.log(req.body.container);
         // console.log(file);
@@ -105,17 +111,12 @@ app.post('/avatar', upload.single('fileload'), (req, res,) => {
                     }
                 } catch (error) {
                     // console.error(error)
+                    return res.send("Please correct csv file upload")
                 }
                 // console.log(jsonObj.slice(1,));
 
             })
-        //............unwanted file uploading...............
-
-        // console.log("csvFilePath", csvFilePath)
-        // const sql = "INSERT INTO file(`name`) VALUES ('" + req.file.originalname + "')";
-        // const query = db.query(sql, function (err, result) {
-        //     return res.send({ message: 'File is successfully.', file });
-        // });
+      
 
     } else {
         const file = req.file;
@@ -127,32 +128,33 @@ app.post('/avatar', upload.single('fileload'), (req, res,) => {
 
         const csvFilePath = `./uploads/${req.file.filename}`
         //..............................Purchase sheet upload.......................    
- 
-        if (req.body.container == 'purchase') {
-        }
         csvtojson({ trim: true, headers: ['id', 'item_description', 'purchase', 'c_stock_remark'] })
             .fromFile(csvFilePath)
             .then( async (jsonObj) => {
-                try {
                     jsonObj = jsonObj.slice(1,)
-                    await db.query(" TRUNCATE TABLE purchase ");
+                    await db.query("TRUNCATE TABLE purchase ");
                     for (let i = 0; i < jsonObj.length; i++) {
-                       await db.query('INSERT INTO purchase SET ?', [jsonObj[i]]);
+        // db.query('INSERT INTO purchase SET ?',jsonObj[i], async (err, newItem) => {
+        //     if(err) {
+        //         console.log(err.code)
+        //     return res.send(err)
+        //     }
+        //     console.log(newItem)
+        // })
+
+        try {
+
+         await   db.query('INSERT INTO purchase SET ?', [jsonObj[i]]);
+        } catch (error) {
+            console.log(error.code)
+            return res.send("Please correct csv file upload")
+        }
                     }
-                } catch (error) {
-                    // console.error(error);
-                }
-                // console.log(jsonObj.slice(1,));
-
             })
-
-        // console.log("csvFilePath", csvFilePath)
-        // const sql = "INSERT INTO file(`name`) VALUES ('" + req.file.originalname + "')";
-        // const query = db.query(sql, function (err, result) {
-        //     return res.send({ message: 'File is successfully.', file });
-        // });
     }
-
+   } catch (error) {
+    console.log(error,"Test")
+   }
 });
 
 app.get('/newItem', (req, res) => {

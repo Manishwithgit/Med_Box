@@ -107,11 +107,11 @@
             <form action="/avatar" enctype="multipart/form-data" method="post">
                 <select name="container" id="container">
 
-                    <option  value="purchase">Select Purchase & C.Stock Remark Sheet </option>
-                    <option  value="quantity"> Select Quantity & Average Sheet </option>
+                    <option  value="purchase">Purchase & C.Stock Remark Sheet </option>
+                    <option  value="quantity"> Quantity & Average Sheet </option>
     
                 </select> <br>
-                <input class="selectFile" name="fileload" accept=".csv"  type="file" id="fileUpload">
+                <input class="selectFile" name="fileload" accept=".csv"  type="file" id="fileUpload" onchange="return fileValidation()" >
                 <br>
                 <input class="selectFile" type="submit" value="Uploads">
             </form>
@@ -130,6 +130,20 @@
         </div>
     </div>
    <footer style="color: white; text-align: center;">&copy; Copyright 2022 All rights reserved | <a style="color: white;" href="https://codebuckets.in/" target="_blank">Codebucket Solutions Pvt. Ltd.</a> </footer>
+    <script>
+  function fileValidation(){
+    const fileInput = document.getElementById('fileUpload');
+    const filePath = fileInput.value;
+    const allowedExtensions = /(\.csv)$/i;
+    if(!allowedExtensions.exec(filePath)){
+        alert('Please upload file having extensions .csv ');
+        fileInput.value = '';
+        return false;
+    }else{
+      
+    }
+}
+ </script>
 </body>
 
 </html>
